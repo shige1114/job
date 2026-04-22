@@ -1,0 +1,20 @@
+FROM gradle:8.7-jdk17
+
+WORKDIR /app
+
+# 依存解決キャッシュ用
+COPY backend/build.gradle.kts backend/settings.gradle.kts backend/gradle.properties /app/
+
+RUN gradle dependencies || true
+
+# ソースコードコピー
+COPY backend /app
+
+# ポート
+EXPOSE 8080
+
+# 開発用起動:
+# -t classes --watch-fs=false でソース変更を監視して強制的にコンパイルし、
+# gradle run でKtorサーバーを起動します。
+# Ktorの watch = [ classes, resources ] により、サーバープロセスを落とさず変更が反映されます。
+CMD ["sh", "-c", "gradle -t classes --watch-fs=false & gradle run"]

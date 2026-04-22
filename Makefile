@@ -4,10 +4,10 @@ COMPOSE = docker compose -f docker/docker-compose.yml
 
 # docker compose
 up:
-	$(COMPOSE) up
+	$(COMPOSE) up -d
 
 down:
-	$(COMPOSE) down
+	$(COMPOSE) down --no-cache
 
 build:
 	$(COMPOSE) build
